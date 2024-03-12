@@ -1,75 +1,91 @@
-import React, { useState } from 'react';
-import { View, FlatList, Text, Button, TouchableOpacity, Alert,} from 'react-native';
-import Colors from '../../Colors';
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { View, FlatList, Text, Button, TouchableOpacity, Alert, SafeAreaView} from 'react-native';
+import {rollcall_detail,rollcall_multiple} from '../../../api/rollcall';
+import { UserContext } from '../../../context/user';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-const App = () => {
+
+const App = (props) => {
    
-    const [className, setClassName] = useState('12-A')
+    const [className, setClassName] = useState('A-2')
+    const [students, setStudents] = useState([]);
+    const [state, dispatch] = useContext(UserContext);
+    const { token, id, username, first_name, last_name } = state;
+
+    useEffect(() => {
+        fetchRollCallDetail();
+    }, []);
+  
+    const fetchRollCallDetail = async () => {
+      try {
+        const response = await rollcall_detail(props?.route?.params?.id);
+        const data = await response?.data;
+        const updatedStudents = data.students.map(student => ({
+            ...student,
+            status: false
+          }));
+        setStudents(updatedStudents);
+      } catch (error) {
+        console.error('Error fetching teacher_schedule:', error);
+      }
+    };
 
    
-   
-    const [students, setStudents] = useState([
-        { id: '1',  name: 'Ahmet Yılmaz', checked: false },
-        { id: '2',  name: 'Mehmet Öztürk', checked: false },
-        { id: '3',  name: 'Emre Kaya', checked: false },
-        { id: '4',  name: 'Büşra Demir', checked: false },
-        { id: '5',  name: 'Selin Akın', checked: false },
-        { id: '6',  name: 'Barış Can', checked: false },
-        { id: '7',  name: 'Kübra Genç', checked: false },
-        { id: '8',  name: 'Ege Karadağ', checked: false },
-        { id: '9',  name: 'Bora Erdem', checked: false },
-        { id: '10', name: 'Melis Alp', checked: false },
-        { id: '11', name: 'Sarp Ünlü', checked: false },
-        { id: '12', name: 'İrem Altun', checked: false },
-        { id: '13', name: 'Fırat Yavuz', checked: false },
-        { id: '14', name: 'Elif Polat', checked: false },
-        { id: '15', name: 'Gökhan Tan', checked: false },
-        { id: '16', name: 'Merve Aydın', checked: false },
-        { id: '17', name: 'Oğuzhan Kılıç', checked: false },
-        { id: '18', name: 'Derya Koç', checked: false },
-        { id: '19', name: 'Tolga Sarı', checked: false },
-        { id: '20', name: 'Ayşe Tekin', checked: false },
-        { id: '21', name: 'Burak Duman', checked: false },
-        { id: '22', name: 'Zeynep Ceylan', checked: false }
-
-    ]);
-
     const handleCheckboxChange = (index) => {
         const newStudents = [...students];
-        newStudents[index].checked = !newStudents[index].checked;
+        newStudents[index].status = !newStudents[index].status;
         setStudents(newStudents);
     };
 
     const handleSend = () => {
-        const selectedStudents = students.filter(student => student.checked).map(student => student.name);
+        const selectedStudents = students.filter(student => student.status);
+        console.log('selectedStudents', selectedStudents);
+        console.log('selectedStudents.length', students);
         if (selectedStudents && selectedStudents.length > 0) {
-            console.log('Olmayan Öğrenciler:', selectedStudents);
+            var rollcall_last_list = []
+            console.log('selectedStudents', selectedStudents);
+            for (let i = 0; i < selectedStudents.length; i++) {
+                rollcall_last_list[i] ={
+                    schedule : props?.route?.params?.id, 
+                    user : selectedStudents[i].id, 
+                    date : "2024-03-12",
+                    status : true}
+            }
+
+            rollcall_multiple({list: rollcall_last_list});
+
         } else {
             console.log('Sınıf Mevcudu Tam');
         }
     };
 
     return (
-        <View style={{ flex: 1, padding: 20 }}>
-            <Text style={{fontFamily:'Lato-Black', fontSize:22, color:Colors.main}} >{className}</Text>
+        <SafeAreaView style={{ flex: 1, margin:10}}>
+            <TouchableOpacity style={{padding:10}} onPress={() => props.navigation.goBack()} >
+</TouchableOpacity>
+            <Text style={{fontFamily:'Lato-Black', fontSize:32, color:'#000', alignSelf:'center'}} >{className}</Text>
+            <Text style={{fontFamily:'Lato-Bold', fontSize:18, color:'#a8a8a8',  alignSelf:'center' ,marginBottom:10}} >16 Aralık 2023</Text>
+
             <FlatList
-    data={students}
-    renderItem={({ item, index }) => (
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-            <BouncyCheckbox
-                isChecked={item.checked}
-                onPress={() => handleCheckboxChange(index)}
+                data={students}
+                renderItem={({ item, index }) => (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                        <BouncyCheckbox
+                            checked={item.status}
+                            onPress={() => {handleCheckboxChange(index); console.log('index', index);}}
+                        />
+
+                        <Text>
+                            {item.first_name + ' ' + item.last_name + ' / ' + item.username}
+                        </Text>
+                    </View>
+                )}
+                keyExtractor={(item) => item.id}
             />
-            <Text style={{ marginLeft: 10 }}>{item.name}</Text>
-        </View>
-    )}
-    keyExtractor={(item) => item.id}
-/>
             
             <TouchableOpacity style={{backgroundColor:'green', borderRadius:8, paddingVertical:4, paddingHorizontal:12, alignSelf:'center'}} onPress={handleSend} >
                 <Text style={{fontSize:22, fontFamily:'Lato-Bold', color:'#fff'}} >Yoklamayı Gönder</Text>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -1,13 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet,ScrollView, SafeAreaView,Image,Dimensions } from 'react-native';
+import React, { useState, useRef, useEffect,useContext } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet,ScrollView, SafeAreaView } from 'react-native';
 import Colors from '../../Colors';
+import {teacher_schedule} from '../../../api/schedule';
+import { UserContext } from '../../../context/user';
 
-const App = () => {
+const App = (props) => {
+  const [state, dispatch] = useContext(UserContext)
   const today = new Date().getDay();
   const initialSelected = (today + 6) % 7; // Pazar için 6, Pazartesi için 0, Salı için 1... değerlerini elde ederiz.
   const [selected, setSelected] = useState(initialSelected);
   const todayIndex = (new Date().getDay() + 6) % 7;  // Bugünün indeksini al
-  const { width, height } = Dimensions.get('window');
+
+  //öğretmen için tutulan ders programı listesi
+  const [teacherSchedules, setTeacherSchedules] = useState([[],[],[],[],[],[],[] ]);
+  const [render, setRerender] = useState(false);
 
   useEffect(() => {
     ongoingOrUpcomingRef.current = false;
@@ -22,21 +28,37 @@ const App = () => {
     scrollViewRef.current.scrollTo({ x: position, animated: true });
   }, [selected]);
 
+
+  useEffect(() => {
+      fetchTeacherSchedules();
+  }, [render]);
+
+  const fetchTeacherSchedules = async () => {
+    try {
+      const response = await teacher_schedule(state?.id);
+      setTeacherSchedules(response?.data?.schedules);
+    } catch (error) {
+      console.error('Error fetching teacher_schedule:', error);
+    }
+  };
+
+
+
   const getCurrentTime = () => {
     const now = new Date();
     return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   };
   const ongoingOrUpcomingRef = useRef(false);
 
-  const isUpcomingLesson = (lessonTime) => {
+  const isUpcomingLesson = (startTime, finishTime) => {
     if (ongoingOrUpcomingRef.current || selected !== todayIndex) {
       // Eğer bir ders zaten yeşil renkte gösterildiyse veya seçili gün bugün değilse yeşil gösterme
       return false;
     }
   
-    const [start, end] = lessonTime.split('-').map(t => t.trim());
     const currentTime = getCurrentTime();
   
+    const [start, end] = [startTime, finishTime].map(t => t.trim());
     const isOngoing = currentTime >= start && currentTime <= end;
     const isUpcoming = currentTime < start;
   
@@ -48,57 +70,6 @@ const App = () => {
     return false;
   };
   
-
-  const dataSets = [
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' }, ], //pazartesi
-   
-   
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' }, ], //Salı
-   
-   
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' },  ], //çrş
-   
-   
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' },  ], //prş
-   
-   
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' },  ], //cuma
-    
-    
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'15:00 - 16:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' },  ], //cmt
-   
-   
-    [{ClassName:'14-A',LessonName:'Speaking', Time:'08:00 - 09:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'10:00 - 11:20' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'13:00 - 14:45' },
-    {ClassName:'12-B',LessonName:'Reading', Time:'17:00 - 18:00' },  ], //cumartesi
-   
-   
-
-   
-
-
-  ];
-
   const buttons = [
     { label: 'Pazartesi', index: 0 },
     { label: 'Salı', index: 1},
@@ -107,31 +78,26 @@ const App = () => {
     { label: 'Cuma', index: 4 },
     { label: 'Cumartesi', index: 5 },
     { label: 'Pazar', index: 6 },
-
-
-
   ];
 
   const renderItem = ({ item }) => (
-    <View style={[
-      { backgroundColor: isUpcomingLesson(item.Time) ? Colors.mainYellow: '#fff' },
+    <TouchableOpacity onPress={()=>{ props.navigation.navigate("YoklamaDetay", { id: item?.id })}} style={[
+      { backgroundColor: isUpcomingLesson(item.start_time,item.finis_time) ? Colors.mainYellow : '#fff' },
       { flexDirection: 'row', alignItems: 'center', flex: 1, margin: 5, borderRadius: 12, borderColor: '#ddd', borderWidth: 1, justifyContent: 'space-between' }
     ]}>
-      <Text style={{ padding: 15, fontFamily:'Lato-Medium', fontSize:16}}>{item.Time}</Text>
-      <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item.LessonName}</Text>
-      <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item.ClassName}</Text>
-    </View>
+      <Text style={{ padding: 15, fontFamily:'Lato-Medium', fontSize:16}}>{item?.start_time} - {item?.finis_time}</Text>
+      <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item?.lesson?.name}</Text>
+      <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item?.class_fk?.name}</Text>
+    </TouchableOpacity>
   );
   
 
 
   return (
     <SafeAreaView style={{marginTop:10}} >
-     <Image
-        style={{ width: width / 1.3, height: height, position:'absolute', right:0 }}
-        source={require('../../kuleGray.png')}
-        resizeMode='contain'
-      />
+      <TouchableOpacity style={{padding:10}} onPress={() => props.navigation.goBack()} >
+     {/* <FontAwesomeIcon icon={faAngleLeft} style={{color:'#000'}} size={20} /> */}
+</TouchableOpacity>
       <ScrollView horizontal={true} 
        ref={scrollViewRef} 
       >
@@ -156,11 +122,12 @@ const App = () => {
         ))}
       </ScrollView>
       <FlatList
-    data={dataSets[selected]}
+    data={teacherSchedules[selected]}
     renderItem={renderItem} 
     keyExtractor={(item, index) => index.toString()}
     extraData={ongoingOrUpcomingRef}
-    onRefresh={() => ongoingOrUpcomingRef.current = false}    refreshing={false}
+    onRefresh={() => {ongoingOrUpcomingRef.current = false; setRerender(!render)}}    
+    refreshing={false}
   />
     </SafeAreaView>
   );
