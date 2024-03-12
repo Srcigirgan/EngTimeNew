@@ -81,11 +81,11 @@ const App = (props) => {
   ];
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={()=>{ props.navigation.navigate("YoklamaDetay", { id: item?.id })}} style={[
+    <TouchableOpacity onPress={()=>{ props.navigation.navigate("YoklamaDetay", { id: item?.id, lesson: item?.lesson?.name, class_name: item?.class_fk?.name })}} style={[
       { backgroundColor: isUpcomingLesson(item.start_time,item.finis_time) ? Colors.mainYellow : '#fff' },
       { flexDirection: 'row', alignItems: 'center', flex: 1, margin: 5, borderRadius: 12, borderColor: '#ddd', borderWidth: 1, justifyContent: 'space-between' }
     ]}>
-      <Text style={{ padding: 15, fontFamily:'Lato-Medium', fontSize:16}}>{item?.start_time} - {item?.finis_time}</Text>
+      <Text style={{ padding: 15, fontFamily:'Lato-Medium', fontSize:16}}>{item?.start_time.slice(0, -3)} - {item?.finis_time.slice(0, -3)}</Text>
       <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item?.lesson?.name}</Text>
       <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item?.class_fk?.name}</Text>
     </TouchableOpacity>

@@ -47,7 +47,7 @@ const App = (props) => {
                 rollcall_last_list[i] ={
                     schedule : props?.route?.params?.id, 
                     user : selectedStudents[i].id, 
-                    date : "2024-03-12",
+                    date: new Date().toISOString().slice(0, 10),
                     status : true}
             }
 
@@ -62,8 +62,9 @@ const App = (props) => {
         <SafeAreaView style={{ flex: 1, margin:10}}>
             <TouchableOpacity style={{padding:10}} onPress={() => props.navigation.goBack()} >
 </TouchableOpacity>
-            <Text style={{fontFamily:'Lato-Black', fontSize:32, color:'#000', alignSelf:'center'}} >{className}</Text>
-            <Text style={{fontFamily:'Lato-Bold', fontSize:18, color:'#a8a8a8',  alignSelf:'center' ,marginBottom:10}} >16 Aralık 2023</Text>
+        <Text style={{fontFamily:'Lato-Black', fontSize:32, color:'#000', alignSelf:'center'}} > {props?.route?.params?.class_name} </Text>
+            <Text style={{fontFamily:'Lato-Black', fontSize:32, color:'#000', alignSelf:'center'}} > {props?.route?.params?.lesson} </Text>
+            <Text style={{fontFamily:'Lato-Bold', fontSize:18, color:'#a8a8a8',  alignSelf:'center' ,marginBottom:10}} > {new Date().toISOString().slice(0, 10)} </Text>
 
             <FlatList
                 data={students}
@@ -71,7 +72,7 @@ const App = (props) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                         <BouncyCheckbox
                             checked={item.status}
-                            onPress={() => {handleCheckboxChange(index); console.log('index', index);}}
+                            onPress={() => {handleCheckboxChange(index);}}
                         />
 
                         <Text>

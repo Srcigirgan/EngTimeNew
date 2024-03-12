@@ -1,9 +1,13 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import { View, Text, Image, Dimensions,  StyleSheet, TouchableOpacity, FlatList,SafeAreaView, ScrollView,StatusBar } from 'react-native';
 import Colors from '../../Colors';
+import { UserContext } from '../../../context/user';
+
 const Profil = (props) => {
   const { width, height } = Dimensions.get('window');
- 
+      const [state, dispatch] = useContext(UserContext);
+      const { token, id, username, first_name, last_name } = state;
+      
    const Alan = ['Matematik'] 
    const No = ['123123'] 
 
@@ -23,7 +27,7 @@ const Profil = (props) => {
             resizeMode='contain'
             />
       </View>
-      <Text style={{fontFamily:'Lato-Bold', fontSize:20, color:'#000', alignSelf:'center', marginBottom:20, marginTop:10}} >Salih Rafi ÇIĞIRGAN</Text>
+      <Text style={{fontFamily:'Lato-Bold', fontSize:20, color:'#000', alignSelf:'center', marginBottom:20, marginTop:10}} > {first_name + " " + last_name} </Text>
 
       </View  >
       <View style={{ backgroundColor:'#fff'}} >
@@ -32,8 +36,8 @@ const Profil = (props) => {
       </View>
       <View style={{flexDirection:'row', marginTop:10, alignItems:'center'}} >
       <View style={{width:12, height:55, backgroundColor:Colors.mainYellow}} ></View>
-      <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:22, marginLeft:10}} >No:</Text>
-      <Text style={{fontFamily:'Lato-Medium', color:'gray', fontSize:22, marginLeft:10}} >{No}</Text>
+      <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:22, marginLeft:10}} > Username:</Text>
+      <Text style={{fontFamily:'Lato-Medium', color:'gray', fontSize:22, marginLeft:10}} >{username}</Text>
 
       </View>
 
