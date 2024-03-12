@@ -47,7 +47,7 @@ const Profil = (props) => {
 <TouchableOpacity style={{backgroundColor:Colors.mainYellow, marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
       <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:20}} >Geçmiş Yoklamalar</Text>
 </TouchableOpacity>
-<TouchableOpacity onPress={() => props.navigation.navigate('Auth')} style={{backgroundColor:'red', marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
+<TouchableOpacity onPress={() => { dispatch({type:"LOGOUT"}); props.navigation.navigate('Auth');}} style={{backgroundColor:'red', marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
       <Text style={{fontFamily:'Lato-Bold', color:'#fff', fontSize:20}} >Çıkış Yap</Text>
 </TouchableOpacity>
 
