@@ -14,10 +14,12 @@ import DersProgramim from './HomeScreens/DersProgramim';
 import Profil from './HomeScreens/Profil';
 import YoklamaDetay from './HomeScreens/YoklamaDetay';
 import YoklamaMain from './HomeScreens/YoklamaMain';
+import Notlarim from './HomeScreens/Notlarim';
+
 import GirisYap from './AuthScreens/GirisYap';
 import KayitOl from './AuthScreens/KayitOl';
 import RegisterMain from './AuthScreens/RegisterMain';
-
+import test from './HomeScreens/test'
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -28,19 +30,25 @@ const profilIcon = require('../user.png');
 const profilIconFocused = require('../user-2.png');
 
 
-const MainStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="MainScreen" component={MainScreen} />
-    <Stack.Screen name="YoklamaMain" component={YoklamaMain} />
-    <Stack.Screen name="YoklamaDetay" component={YoklamaDetay} />
-  </Stack.Navigator>
-);
+
 
 const AuthStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="GirisYap" component={GirisYap} /> 
     {/* <Stack.Screen name="KayitOl" component={KayitOl} />
     <Stack.Screen name="RegisterMain" component={RegisterMain} /> */}
+  </Stack.Navigator>
+);
+const MainStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="MainScreen" component={MainScreen} />
+    <Stack.Screen name="YoklamaMain" component={YoklamaMain} />
+    <Stack.Screen name="YoklamaDetay" component={YoklamaDetay} />
+    <Stack.Screen name="test" component={test} />
+    <Stack.Screen name="Notlarim" component={Notlarim} />
+
+
+
   </Stack.Navigator>
 );
 
@@ -54,6 +62,16 @@ const ProfilStack = () => (
 const MainTabScreen = () => (
   <NavigationContainer>
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel:false}} >
+    <Tab.Screen
+        options={({ focused }) => ({
+          tabBarLabel: 'Auth',
+         
+          tabBarButton: () => null,
+          tabBarStyle: { display: 'none' },
+        })}
+        name="Auth"
+        component={AuthStack}
+      />
       <Tab.Screen
         options={({ focused }) => ({
           tabBarLabel: 'AnaSayfa',
@@ -67,16 +85,7 @@ const MainTabScreen = () => (
         name="AnaSayfa"
         component={MainStack}
       />
-      <Tab.Screen
-        options={({ focused }) => ({
-          tabBarLabel: 'Auth',
-         
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' },
-        })}
-        name="Auth"
-        component={AuthStack}
-      />
+     
       <Tab.Screen
         options={({ focused }) => ({
           
@@ -88,7 +97,7 @@ const MainTabScreen = () => (
             />
           ),
         })}
-        name="Profil"
+        name="ProfilStack"
         component={ProfilStack}
       />
     </Tab.Navigator>

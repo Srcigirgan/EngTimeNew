@@ -74,6 +74,12 @@ PODS:
     - hermes-engine/Pre-built (= 0.73.3)
   - hermes-engine/Pre-built (0.73.3)
   - libevent (2.1.12)
+  - lottie-ios (4.4.1)
+  - lottie-react-native (6.7.0):
+    - glog
+    - lottie-ios (~> 4.4.1)
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2022.05.16.00):
     - boost
@@ -1156,6 +1162,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -1220,6 +1227,7 @@ SPEC REPOS:
     - FlipperKit
     - fmt
     - libevent
+    - lottie-ios
     - OpenSSL-Universal
     - SocketRocket
 
@@ -1239,6 +1247,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-11-17-RNv0.73.0-21043a3fc062be445e56a2c10ecd8be028dd9cc5
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -1351,6 +1361,8 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 5420539d016f368cd27e008f65f777abd6098c56
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
+  lottie-react-native: 36b4c75807716e499317b5c62f53e4d85c5e5c8a
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: 9b898847f76977a6dfed2a08f4c5ed37add75ec0

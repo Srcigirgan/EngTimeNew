@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import { View, Text, Image, Dimensions,  StyleSheet, TouchableOpacity, FlatList,SafeAreaView, ScrollView,StatusBar, ImageBackground,Modal} from 'react-native';
 import Colors from '../../Colors';
+import LottieView from 'lottie-react-native'; // Lottie ekledik
+
 const MainScreen = (props) => {
   const { width, height } = Dimensions.get('window');
 const TestDataDuyurular = [
@@ -85,7 +87,7 @@ const prevDuyuru = () => {
             />
         <Text style={{fontFamily:'Lato-Black',fontSize:16, color:'#000', marginTop:10 }} >YOKLAMA AL</Text>
       </TouchableOpacity>
-      <TouchableOpacity  style={{backgroundColor:Colors.mainYellow,paddingVertical:8,  elevation: 5,
+      <TouchableOpacity  onPress={()=>props.navigation.navigate('Notlarim')} style={{backgroundColor:Colors.mainYellow,paddingVertical:8,  elevation: 5,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -98,8 +100,22 @@ const prevDuyuru = () => {
             />
         <Text style={{fontFamily:'Lato-Black',fontSize:16, color:'#000', marginTop:10}} >NOTLARIM</Text>
       </TouchableOpacity>
-      </View>
       
+     
+      </View>
+      <TouchableOpacity  onPress={()=>props.navigation.navigate('test')} style={{backgroundColor:Colors.mainYellow,paddingVertical:8,  elevation: 5,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    alignSelf:'center', alignItems:'center', width:width/2.5, height:width/2.5, justifyContent:'center', borderRadius:25, marginTop:20}} >
+ <Image
+      style={{ width:width/4.1, height:width/4.1, alignSelf:'center',marginTop:10}}
+      source={require('../../post-it.png')}
+                resizeMode='contain'
+            />
+        <Text style={{fontFamily:'Lato-Black',fontSize:16, color:'#000', marginTop:10}} >TEST</Text>
+      </TouchableOpacity>
      
     </SafeAreaView>
   );
