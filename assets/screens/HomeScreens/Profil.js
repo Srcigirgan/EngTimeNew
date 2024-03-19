@@ -20,10 +20,10 @@ const Profil = (props) => {
             source={require('../../logoSiyah.png')}
             resizeMode='contain'
             />
-      <View style={{width:width/2.8, height:width/2.8, backgroundColor:'#000', borderRadius:100, alignSelf:'center', marginTop:10, justifyContent:'center', alignItems:'center'}} >  
+      <View style={{width:width/2.8, height:width/2.8, backgroundColor:'#fff', borderRadius:100, alignSelf:'center', marginTop:10, justifyContent:'center', alignItems:'center'}} >  
       <Image
-            style={{ width:width/3, height:width/3, alignSelf:'center', borderRadius:100}}
-            source={require('../../src.png')}
+            style={{ width:width/4, height:width/4, alignSelf:'center',}}
+            source={require('../../logoSiyah.png')}
             resizeMode='contain'
             />
       </View>
@@ -36,7 +36,7 @@ const Profil = (props) => {
       </View>
       <View style={{flexDirection:'row', marginTop:10, alignItems:'center'}} >
       <View style={{width:12, height:55, backgroundColor:Colors.mainYellow}} ></View>
-      <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:22, marginLeft:10}} > Username:</Text>
+      <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:22, marginLeft:10}} > Kullanıcı Adı:</Text>
       <Text style={{fontFamily:'Lato-Medium', color:'gray', fontSize:22, marginLeft:10}} >{username}</Text>
 
       </View>
@@ -44,7 +44,7 @@ const Profil = (props) => {
 <TouchableOpacity onPress={()=>props.navigation.navigate('DersProgramim')} style={{backgroundColor:Colors.mainYellow, marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
       <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:20}} >Ders Programım</Text>
 </TouchableOpacity>
-<TouchableOpacity style={{backgroundColor:Colors.mainYellow, marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
+<TouchableOpacity  onPress={()=>props.navigation.navigate('GecmisYoklama')} style={{backgroundColor:Colors.mainYellow, marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >
       <Text style={{fontFamily:'Lato-Bold', color:'#000', fontSize:20}} >Geçmiş Yoklamalar</Text>
 </TouchableOpacity>
 <TouchableOpacity onPress={() => { dispatch({type:"LOGOUT"}); props.navigation.navigate('Auth');}} style={{backgroundColor:'red', marginTop:20, alignSelf:'flex-start', paddingVertical:5, paddingHorizontal:25, justifyContent:'center', alignItems:'center', borderTopRightRadius:12, borderBottomRightRadius:12}} >

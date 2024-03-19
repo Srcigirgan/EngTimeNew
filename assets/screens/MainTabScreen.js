@@ -20,6 +20,7 @@ import GirisYap from './AuthScreens/GirisYap';
 import KayitOl from './AuthScreens/KayitOl';
 import RegisterMain from './AuthScreens/RegisterMain';
 import test from './HomeScreens/test'
+import GecmisYoklama from './HomeScreens/GecmisYoklama';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,8 @@ const ProfilStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Profil" component={Profil} />
     <Stack.Screen name="DersProgramim" component={DersProgramim} />
+    <Stack.Screen name="GecmisYoklama" component={GecmisYoklama} />
+
   </Stack.Navigator>
 );
 

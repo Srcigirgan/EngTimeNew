@@ -103,19 +103,7 @@ const prevDuyuru = () => {
       
      
       </View>
-      <TouchableOpacity  onPress={()=>props.navigation.navigate('test')} style={{backgroundColor:Colors.mainYellow,paddingVertical:8,  elevation: 5,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    alignSelf:'center', alignItems:'center', width:width/2.5, height:width/2.5, justifyContent:'center', borderRadius:25, marginTop:20}} >
- <Image
-      style={{ width:width/4.1, height:width/4.1, alignSelf:'center',marginTop:10}}
-      source={require('../../post-it.png')}
-                resizeMode='contain'
-            />
-        <Text style={{fontFamily:'Lato-Black',fontSize:16, color:'#000', marginTop:10}} >TEST</Text>
-      </TouchableOpacity>
+     
      
     </SafeAreaView>
   );

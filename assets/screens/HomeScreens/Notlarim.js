@@ -9,6 +9,8 @@ const {width, height} = Dimensions.get('window')   ;
 const TodoApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [inputValue2, setInputValue2] = useState('');
+
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const TodoApp = () => {
       const newTodo = {
         id: Date.now().toString(),
         text: inputValue,
+        text2:inputValue2,
         date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }),
       };
       const updatedTodos = [...todos, newTodo];
@@ -64,7 +67,7 @@ const TodoApp = () => {
       </View>
       <View style={{borderBottomRightRadius:width/30, borderBottomLeftRadius:width/30,backgroundColor:'#ddd', width:width/2.5, paddingBottom:20,  alignItems:'center', paddingHorizontal:8 }} >
         
-<Text style={{fontSize:width/25, fontFamily:'Lato-Bold', color:'#000', marginTop:10}} >{item.text}</Text>
+<Text style={{fontSize:width/25, fontFamily:'Lato-Bold', color:'#000', marginTop:10}} >{item.text2}</Text>
 <View style={{alignItems:'center', flexDirection:'row', justifyContent:'space-between',width:width/3, marginTop:10}} >
     <Text style={{fontFamily:'Lato-Bold', fontSize:width/30, color:'#000'}} >{item.date}</Text>
 <TouchableOpacity style={{ padding:10}} onPress={() => deleteTodo(item.id)}>
@@ -112,14 +115,13 @@ const TodoApp = () => {
               placeholder="Başlık Giriniz.."
               onChangeText={text => setInputValue(text)}
               value={inputValue}
-              multiline={true}
             />
             <Text style={{fontFamily:'Lato-Bold', fontSize:width/20, color:'#000'}} >Lütfen içerk giriniz..</Text>
             <TextInput
               style={styles.input}
               placeholder="Başlık Giriniz.."
-              onChangeText={text => setInputValue(text)}
-              value={inputValue}
+              onChangeText={text2 => setInputValue2(text2)}
+              value={inputValue2}
               multiline={true}
             />
             <TouchableOpacity

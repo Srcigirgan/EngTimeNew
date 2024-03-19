@@ -31,7 +31,7 @@ const GirisYap = (props) => {
 
     try {
       const response = await login(userData);
-      console.log("Login API çağrısı tamamlandı.", response);
+      console.log("Login API çağrısı tamamlandı.");
 
       if (response?.status == 200 || response?.status == 201) {
         await AsyncStorage.setItem('userToken', response.data.token);
@@ -47,10 +47,10 @@ const GirisYap = (props) => {
             Authorization: `Token ${response.data.token}`,
           },
         });
-        console.log("Kullanıcı bilgilerini almak için API çağrısı yapıldı.", userResponse);
+        console.log("Kullanıcı bilgilerini almak için API çağrısı yapıldı.");
 
         const user_data = await userResponse.json();
-        console.log("Kullanıcı bilgileri alındı.", user_data);
+        console.log("Kullanıcı bilgileri alındı.");
 
         dispatch({ type: 'USER_DETAIL', payload: { user_data: user_data.data } }); // Dispatch with correct payload
         console.log("UserContext'e kullanıcı bilgileri dispatch yapıldı.");
