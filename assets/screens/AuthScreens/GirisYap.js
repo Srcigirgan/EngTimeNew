@@ -30,21 +30,27 @@ const GirisYap = (props) => {
     userData = { username: text, password: text2 };
 
     try {
-      const response = await login(userData);
-      console.log("Login API çağrısı tamamlandı.");
+      const response = await fetch(`http://161.97.97.61:8000/login/jwt/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      }).then((response) => response.json());
 
-      if (response?.status == 200 || response?.status == 201) {
-        await AsyncStorage.setItem('userToken', response.data.token);
+      console.log(response)
+
+        await AsyncStorage.setItem('userToken', response.token);
         console.log("AsyncStorage.setItem tamamlandı.");
 
-        dispatch({ type: 'LOGIN', payload: { token: response.data.token } }); // Dispatch with correct payload
+        dispatch({ type: 'LOGIN', payload: { token: response.token } }); // Dispatch with correct payload
         console.log("UserContext'e dispatch yapıldı.");
 
         const userResponse = await fetch(`http://161.97.97.61:8000/api/user/${text}/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Token ${response.data.token}`,
+            Authorization: `Token ${response.token}`,
           },
         });
         console.log("Kullanıcı bilgilerini almak için API çağrısı yapıldı.");
@@ -57,7 +63,6 @@ const GirisYap = (props) => {
 
         props.navigation.navigate('AnaSayfa');
         console.log("AnaSayfa'ya yönlendirildi.");
-      }
     } catch (error) {
       console.log("Hata oluştu:", error);
     } finally {
