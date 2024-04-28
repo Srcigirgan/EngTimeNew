@@ -24,9 +24,6 @@ const GirisYap = (props) => {
 
   const onSubmit = async () => {
     setLoading(true); // Giriş işlemi başladığında yükleme durumunu true olarak ayarlayın
-
-    console.log("Giriş işlemi başladı.");
-
     userData = { username: text, password: text2 };
 
     try {
@@ -38,13 +35,11 @@ const GirisYap = (props) => {
         body: JSON.stringify(userData),
       }).then((response) => response.json());
 
-      console.log(response)
 
         await AsyncStorage.setItem('userToken', response.token);
-        console.log("AsyncStorage.setItem tamamlandı.");
+        await AsyncStorage.setItem("userName", text )
 
         dispatch({ type: 'LOGIN', payload: { token: response.token } }); // Dispatch with correct payload
-        console.log("UserContext'e dispatch yapıldı.");
 
         const userResponse = await fetch(`http://161.97.97.61:8000/api/user/${text}/`, {
           method: 'GET',
@@ -53,16 +48,13 @@ const GirisYap = (props) => {
             Authorization: `Token ${response.token}`,
           },
         });
-        console.log("Kullanıcı bilgilerini almak için API çağrısı yapıldı.");
 
         const user_data = await userResponse.json();
-        console.log("Kullanıcı bilgileri alındı.");
 
         dispatch({ type: 'USER_DETAIL', payload: { user_data: user_data.data } }); // Dispatch with correct payload
-        console.log("UserContext'e kullanıcı bilgileri dispatch yapıldı.");
 
         props.navigation.navigate('AnaSayfa');
-        console.log("AnaSayfa'ya yönlendirildi.");
+
     } catch (error) {
       console.log("Hata oluştu:", error);
     } finally {
@@ -70,6 +62,48 @@ const GirisYap = (props) => {
       console.log("Giriş işlemi tamamlandı.");
     }
   };
+
+  useEffect(() => {
+    
+    const Foo = async () => {
+
+      try{
+        const token = await AsyncStorage.getItem("userToken");
+        const text = await AsyncStorage.getItem("userName");
+        if(token && text){
+
+          dispatch({ type: 'LOGIN', payload: { token: token } }); // Dispatch with correct payload
+
+          const userResponse = await fetch(`http://161.97.97.61:8000/api/user/${text}/`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Token ${token}`,
+            },
+          }).then((response) => response.json());
+
+          if(userResponse.success){
+            dispatch({ type: 'USER_DETAIL', payload: { user_data: userResponse.data } }); // Dispatch with correct payload
+            props.navigation.navigate('AnaSayfa');
+          }
+          else{
+            await AsyncStorage.setItem("userToken","");
+          }
+
+        }
+
+      }
+      catch{
+
+      }
+    }
+
+
+    Foo()
+  
+    
+  }, [])
+  
 
   return (
     <View style={{ backgroundColor: Colors.mainYellow, flex: 1, justifyContent: 'space-between' }}>
