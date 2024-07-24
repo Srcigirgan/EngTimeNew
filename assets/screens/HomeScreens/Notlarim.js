@@ -6,7 +6,7 @@ const trashIcon = require('../../trash-can.png');
 const {width, height} = Dimensions.get('window')   ;
 
 
-const TodoApp = () => {
+const TodoApp = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [inputValue2, setInputValue2] = useState('');
@@ -86,7 +86,13 @@ const TodoApp = () => {
                 resizeMode='contain'
             />
           <View style={{backgroundColor:Colors.mainYellow, flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:10}} >
-   
+          <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{padding:10,  position:'absolute', left:20, top:20}} >
+          <Image
+    style={{ width:30, height:30, alignSelf:'center',}}
+    source={require('../../back.png')}
+              resizeMode='contain'
+          />
+          </TouchableOpacity>
    <Image
     style={{ width:width/2, height:85, alignSelf:'center',marginTop:10}}
     source={require('../../logoSiyah.png')}
@@ -116,10 +122,10 @@ const TodoApp = () => {
               onChangeText={text => setInputValue(text)}
               value={inputValue}
             />
-            <Text style={{fontFamily:'Lato-Bold', fontSize:width/20, color:'#000'}} >Lütfen içerk giriniz..</Text>
+            <Text style={{fontFamily:'Lato-Bold', fontSize:width/20, color:'#000'}} >Lütfen içerik giriniz..</Text>
             <TextInput
               style={styles.input}
-              placeholder="Başlık Giriniz.."
+              placeholder="İçerik Giriniz.."
               onChangeText={text2 => setInputValue2(text2)}
               value={inputValue2}
               multiline={true}
@@ -128,7 +134,7 @@ const TodoApp = () => {
               style={styles.button}
               onPress={addTodo}
             >
-              <Text style={styles.buttonText}>Add Todo</Text>
+              <Text style={styles.buttonText}>Not Ekle</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -200,12 +206,13 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: Colors.mainYellow,
     padding: 10,
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
+    color: '#000',
+    fontFamily:'Lato-Bold',
   },
   trashIcon: {
     width: 15,
@@ -219,6 +226,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     fontSize: 20,
     color: 'red',
+    fontFamily:'Lato-Bold'
   },
 });
 

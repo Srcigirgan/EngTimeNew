@@ -1,0 +1,2 @@
+axios un alt satırına : 
+    //"lottie-react-native": "^6.7.0",

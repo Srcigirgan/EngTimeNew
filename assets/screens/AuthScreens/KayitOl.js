@@ -25,7 +25,7 @@ const [text2, setText2] = useState('');
       <View style={{ height: height / 1.7, backgroundColor: '#fff', borderTopLeftRadius: 70, justifyContent:'center', alignItems:'center' }} >
      
       <TextInput
-        label="TC Kimlik No"
+        label="TC Kimlik NoSilll"
         value={text}
         keyboardType='numeric'
         onChangeText={handleTextInputChange}

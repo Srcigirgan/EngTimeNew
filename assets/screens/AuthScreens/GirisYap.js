@@ -27,7 +27,7 @@ const GirisYap = (props) => {
     userData = { username: text, password: text2 };
 
     try {
-      const response = await fetch(`http://161.97.97.61:8000/login/jwt/`, {
+      const response = await fetch(`https://yazilimsrc.com/login/jwt/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const GirisYap = (props) => {
 
         dispatch({ type: 'LOGIN', payload: { token: response.token } }); // Dispatch with correct payload
 
-        const userResponse = await fetch(`http://161.97.97.61:8000/api/user/${text}/`, {
+        const userResponse = await fetch(`https://yazilimsrc.com/api/user/${text}/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const GirisYap = (props) => {
 
           dispatch({ type: 'LOGIN', payload: { token: token } }); // Dispatch with correct payload
 
-          const userResponse = await fetch(`http://161.97.97.61:8000/api/user/${text}/`, {
+          const userResponse = await fetch(`https://yazilimsrc.com/api/user/${text}/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

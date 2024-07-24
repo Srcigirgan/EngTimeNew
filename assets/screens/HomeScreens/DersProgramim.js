@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect,useContext } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet,ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet,ScrollView, SafeAreaView, Dimensions,Image} from 'react-native';
 import Colors from '../../Colors';
 import {teacher_schedule} from '../../../api/schedule';
 import { UserContext } from '../../../context/user';
+
+const { width, height } = Dimensions.get('window');
 
 const App = (props) => {
   const [state, dispatch] = useContext(UserContext)
@@ -83,7 +85,7 @@ const App = (props) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={()=>{ props.navigation.navigate("YoklamaDetay", { id: item?.id, lesson: item?.lesson?.name, class_name: item?.class_fk?.name })}} style={[
       { backgroundColor: isUpcomingLesson(item.start_time,item.finis_time) ? Colors.mainYellow : '#fff' },
-      { flexDirection: 'row', alignItems: 'center', flex: 1, margin: 5, borderRadius: 12, borderColor: '#ddd', borderWidth: 1, justifyContent: 'space-between' }
+      { flexDirection: 'row',  margin: 5, borderRadius: 12, borderColor: '#ddd', borderWidth: 1, justifyContent: 'space-between',width:width/1.1 }
     ]}>
       <Text style={{ padding: 15, fontFamily:'Lato-Medium', fontSize:16}}>{item?.start_time.slice(0, -3)} - {item?.finis_time.slice(0, -3)}</Text>
       <Text style={{ padding: 15, fontFamily:'Lato-Bold', fontSize:18}}>{item?.lesson?.name}</Text>
@@ -94,11 +96,17 @@ const App = (props) => {
 
 
   return (
-    <SafeAreaView style={{marginTop:10}} >
-      <TouchableOpacity style={{padding:10}} onPress={() => props.navigation.goBack()} >
-     {/* <FontAwesomeIcon icon={faAngleLeft} style={{color:'#000'}} size={20} /> */}
-</TouchableOpacity>
-      <ScrollView horizontal={true} 
+    <SafeAreaView style={{marginTop:10, flex:1, justifyContent:'flex-start', alignItems:'flex-start'}} >
+      
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{padding:10, backgroundColor:'red', position:'absolute', bottom:20, alignSelf:'center', zIndex:999, borderRadius:8}} >
+          <Text style={{fontFamily:'Lato-Bold', fontSize:18, color:'#fff'}} >GERİ DÖN</Text>
+          </TouchableOpacity> 
+<Image
+        style={styles.backgroundImage}
+        source={require('../../kuleGray.png')}
+        resizeMode='contain'
+      />
+      <ScrollView  horizontal={true} 
        ref={scrollViewRef} 
       >
         {buttons.map((button, index) => (
@@ -110,12 +118,7 @@ const App = (props) => {
               selected === button.index && styles.selectedButton,
             ]}
           >
-            <Text
-              style={[
-                styles.buttonText,
-                selected === button.index && styles.selectedButtonText,
-              ]}
-            >
+            <Text style={styles.buttonText}>
               {button.label}
             </Text>
           </TouchableOpacity>
@@ -128,7 +131,9 @@ const App = (props) => {
     extraData={ongoingOrUpcomingRef}
     onRefresh={() => {ongoingOrUpcomingRef.current = false; setRerender(!render)}}    
     refreshing={false}
+    style={{marginTop:10, alignSelf:'center'}}
   />
+  
     </SafeAreaView>
   );
 };
@@ -138,22 +143,36 @@ const styles = StyleSheet.create({
     flex: 1,
    
   },
+  backgroundImage: {
+    width: width / 2,
+    height: height / 1.1,
+    alignSelf: 'center',
+    marginTop: 10,
+    position: 'absolute',
+    right: 20,
+    bottom: 0,
+  },
   
   button: {
     padding: 15,
     margin: 5,
     borderRadius: 5,
     backgroundColor: '#ddd',
-alignSelf:'flex-start'
+  
   },
   selectedButton: {
     backgroundColor: Colors.mainYellow,
+    padding: 15,
+    margin: 5,
+    borderRadius: 5,
   },
   buttonText: {
-    color: 'black',
+    color: '#000',
+    fontFamily:'Lato-Bold',
   },
   selectedButtonText: {
     color: '#000',
+    fontFamily:'Lato-Bold'
   },
 
 });

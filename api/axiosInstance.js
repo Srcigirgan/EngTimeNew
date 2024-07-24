@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";//import to
 
 
 
-const baseURL = "http://161.97.97.61:8000/";
+const baseURL = "https://yazilimsrc.com/";
 
 const instance = axios.create({
     baseURL,
